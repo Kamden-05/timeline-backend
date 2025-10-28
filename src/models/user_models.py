@@ -6,10 +6,6 @@ from sqlalchemy import func
 if TYPE_CHECKING:
     from src.models.timeline_models import Timeline
 
-class UserBase(SQLModel):
-    name: str
-    email: str
-
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
@@ -28,6 +24,10 @@ class User(SQLModel, table=True):
         },
         nullable=False,
     )
+
+class UserBase(SQLModel):
+    name: str
+    email: str
 
 class UserCreate(UserBase):
     password: str
