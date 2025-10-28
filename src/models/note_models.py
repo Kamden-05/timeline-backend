@@ -11,7 +11,7 @@ class Note(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
     note_date: date = Field(index=True)
-    body: str
+    body: Optional[str] = Field(default=None)
 
     timeline_id: Optional[int] = Field(default=None, foreign_key="timeline.id")
     timeline: Optional["Timeline"] = Relationship(back_populates="notes")
@@ -26,3 +26,21 @@ class Note(SQLModel, table=True):
         },
         nullable=False,
     )
+
+class NoteBase(SQLModel):
+    title: str
+    note_date: date
+    body: Optional[str]
+
+class NoteCreate(NoteBase):
+    pass
+
+class NoteUpdate(SQLModel):
+    title: Optional[str] = None
+    note_date: Optional[date] = None
+    body: Optional[str] = None
+
+class NoteRead(NoteBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
