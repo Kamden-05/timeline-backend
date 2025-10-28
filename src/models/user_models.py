@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    email: str
+    email: str = Field(sa_column_kwargs={"unique": True})
     password_hash: str
 
     timelines: list["Timeline"] = Relationship(back_populates="user")
