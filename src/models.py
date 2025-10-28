@@ -27,6 +27,9 @@ class Timeline(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
 
+    start_date: Optional[date] = Field(default=None)
+    end_date: Optional[date] = Field(default=None)
+
     user_id: Optional[int] = Field(default=None, foreign_key="user.id")
     user: Optional["User"] = Relationship(back_populates="timelines")
 
