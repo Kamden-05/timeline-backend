@@ -21,8 +21,7 @@ def create_timeline(db: Session, tl_create: TimelineCreate, user_id: int) -> Tim
 
 
 def update_timeline(db: Session, timeline_id: int, tl_update: TimelineUpdate) -> Optional[Timeline]:
-    statement = select(Timeline).where(Timeline.id == timeline_id)
-    timeline = db.exec(statement).first()
+    timeline = db.get(Timeline, timeline_id)
 
     if not timeline:
         return None
