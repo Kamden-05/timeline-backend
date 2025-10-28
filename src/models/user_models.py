@@ -1,0 +1,26 @@
+from sqlmodel import Field, SQLModel, Relationship
+from datetime import datetime
+from typing import Optional, TYPE_CHECKING
+from sqlalchemy import func
+
+if TYPE_CHECKING:
+    from src.models.timeline_models import Timeline
+
+class User(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
+    email: str
+    password_hash: str
+
+    timelines: list["Timeline"] = Relationship(back_populates="user")
+
+    created_at: datetime = Field(
+        sa_column_kwargs={"server_default:": func.now()}, nullable=False
+    )
+    updated_at: datetime = Field(
+        sa_column_kwargs={
+            "server_default:": func.now(),
+            "onupdate": func.now(),
+        },
+        nullable=False,
+    )
