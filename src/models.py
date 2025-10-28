@@ -1,6 +1,7 @@
-from sqlmodel import Field, SQLModel, Relationship
+from sqlmodel import Field, SQLModel, Relationship, UniqueConstraint
 from datetime import datetime, date, timezone
 from typing import Optional
+from sqlalchemy import func
 
 
 class User(SQLModel, table=True):
@@ -11,8 +12,15 @@ class User(SQLModel, table=True):
 
     timelines: list["Timeline"] = Relationship(back_populates="user")
 
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(sa_column_kwargs={"server_default:": func.now()}, nullable=False)
+    updated_at: datetime = Field(
+        sa_column_kwargs={
+            "server_default:": func.now(),
+            "onupdate": func.now(),
+
+        }, 
+        nullable=False
+    )
 
 
 class Timeline(SQLModel, table=True):
@@ -24,8 +32,20 @@ class Timeline(SQLModel, table=True):
 
     notes: list["Note"] = Relationship(back_populates="timeline")
 
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(
+        sa_column_kwargs={"server_default:": func.now()}, nullable=False
+    )
+    updated_at: datetime = Field(
+        sa_column_kwargs={
+            "server_default:": func.now(),
+            "onupdate": func.now(),
+        },
+        nullable=False,
+    )
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "title", name="uq_user_timeline_title"),
+    )
 
 
 class Note(SQLModel, table=True):
@@ -37,5 +57,13 @@ class Note(SQLModel, table=True):
     timeline_id: Optional[int] = Field(default=None, foreign_key="timeline.id")
     timeline: Optional["Timeline"] = Relationship(back_populates="notes")
 
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(
+        sa_column_kwargs={"server_default:": func.now()}, nullable=False
+    )
+    updated_at: datetime = Field(
+        sa_column_kwargs={
+            "server_default:": func.now(),
+            "onupdate": func.now(),
+        },
+        nullable=False,
+    )
