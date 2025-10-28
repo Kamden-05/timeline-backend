@@ -1,6 +1,6 @@
 import os
 
-from .models import User, Timeline, Note
+from src.models import User, Timeline, Note
 
 from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine, Session
