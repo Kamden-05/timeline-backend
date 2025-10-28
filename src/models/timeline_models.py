@@ -7,7 +7,6 @@ if TYPE_CHECKING:
     from src.models.user_models import User
     from src.models.note_models import Note
 
-
 class Timeline(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
@@ -34,3 +33,21 @@ class Timeline(SQLModel, table=True):
     __table_args__ = (
         UniqueConstraint("user_id", "title", name="uq_user_timeline_title"),
     )
+
+class TimelineBase(SQLModel):
+    title: str
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
+
+class TimelineCreate(TimelineBase):
+    pass
+
+class TimelineUpdate(SQLModel):
+    title: Optional[str] = None
+    start_date = Optional[str] = None
+    end_date = Optional[str] = None
+
+class TimelineRead(TimelineBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
