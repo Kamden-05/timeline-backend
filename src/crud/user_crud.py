@@ -2,7 +2,7 @@ from sqlmodel import Session, select
 from src.models.user_models import User, UserCreate, UserUpdate
 from src.crud.helpers import save
 from typing import Optional
-
+from security import verify_password
 
 def get_user(db: Session, user_id: int) -> Optional[User]:
     return db.get(User, user_id)
@@ -41,3 +41,13 @@ def delete_user(db: Session, user_id: int) -> bool:
     db.commit()
 
     return True
+
+def authenticate_user(db: Session, email: str, password: str) -> Optional[User]:
+    user = get_user_by_email(db, email)
+
+    if not user:
+        return None
+    if not verify_password(password, user.password_hash):
+        return None
+    
+    return user
