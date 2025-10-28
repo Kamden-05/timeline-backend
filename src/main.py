@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.routes import notes, timelines, users
+from src.routers import notes, timelines, users
 
 app = FastAPI()
 

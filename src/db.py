@@ -1,8 +1,17 @@
-from sqlmodel import create_engine
-from dotenv import load_dotenv
 import os
+
+from .models import User, Timeline, Note
+
+from dotenv import load_dotenv
+from sqlmodel import SQLModel, create_engine, Session
 
 load_dotenv()
 url = os.getenv("DB_URL")
 
-print(url)
+engine = create_engine(url, echo=True) # type: ignore
+
+SQLModel.metadata.create_all(engine)
+
+def get_db():
+    with Session(engine) as db:
+        yield db
