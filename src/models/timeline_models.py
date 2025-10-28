@@ -21,11 +21,11 @@ class Timeline(SQLModel, table=True):
     notes: list["Note"] = Relationship(back_populates="timeline")
 
     created_at: datetime = Field(
-        sa_column_kwargs={"server_default:": func.now()}, nullable=False
+        sa_column_kwargs={"server_default": func.now()}, nullable=False
     )
     updated_at: datetime = Field(
         sa_column_kwargs={
-            "server_default:": func.now(),
+            "server_default": func.now(),
             "onupdate": func.now(),
         },
         nullable=False,
