@@ -13,7 +13,9 @@ class User(SQLModel, table=True):
     email: str = Field(sa_column_kwargs={"unique": True})
     password_hash: str
 
-    timelines: list["Timeline"] = Relationship(back_populates="user")
+    timelines: list["Timeline"] = Relationship(
+        back_populates="user", sa_relationship_kwargs={"cascade": "all, delete"}
+    )
 
     created_at: datetime = Field(
         sa_column_kwargs={"server_default": func.now()}, nullable=False

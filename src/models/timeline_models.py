@@ -17,7 +17,7 @@ class Timeline(SQLModel, table=True):
     user_id: Optional[int] = Field(default=None, foreign_key="user.id")
     user: Optional["User"] = Relationship(back_populates="timelines")
 
-    notes: list["Note"] = Relationship(back_populates="timeline")
+    notes: list["Note"] = Relationship(back_populates="timeline", sa_relationship_kwargs={"cascade": "all, delete"})
 
     created_at: datetime = Field(
         sa_column_kwargs={"server_default": func.now()}, nullable=False
