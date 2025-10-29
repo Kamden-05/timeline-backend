@@ -6,8 +6,8 @@ from sqlmodel import Session
 from crud import user_crud
 from db import get_db
 from models.user_models import User, UserRead, UserUpdate, UserDbUpdate
-from routers.dependencies import get_current_user
-from security import get_password_hash
+from dependencies import get_current_user
+from core.security import get_password_hash
 
 router = APIRouter(prefix="/users", tags=["users"])
 

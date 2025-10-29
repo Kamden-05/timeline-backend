@@ -8,7 +8,7 @@ from models.timeline_models import (
     TimelineUpdate,
 )
 from models.user_models import User
-from routers.dependencies import get_current_user
+from dependencies import get_current_user
 from sqlmodel import Session
 
 router = APIRouter(prefix="/timelines", tags=["timelines"])

@@ -9,7 +9,7 @@ from models.user_models import UserCreate, UserDbCreate
 from config import settings
 from crud import user_crud
 from db import get_db
-from security import create_access_token, get_password_hash
+from core.security import create_access_token, get_password_hash
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

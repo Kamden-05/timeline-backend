@@ -2,7 +2,7 @@ from sqlmodel import Session, select
 from models.user_models import User, UserDbCreate, UserDbUpdate
 from crud.helpers import save
 from typing import Optional
-from security import verify_password
+from core.security import verify_password
 
 def get_user(db: Session, user_id: int) -> Optional[User]:
     return db.get(User, user_id)

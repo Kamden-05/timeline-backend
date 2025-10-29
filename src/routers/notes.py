@@ -5,7 +5,7 @@ from db import get_db
 from models.note_models import NoteRead, NoteCreate, NoteUpdate
 from models.user_models import User
 from sqlmodel import Session
-from routers.dependencies import get_current_user
+from dependencies import get_current_user
 
 router = APIRouter(prefix="/timelines/{timeline_id}/notes", tags=["notes"])
 
