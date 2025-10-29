@@ -1,7 +1,6 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
 from sqlmodel import Session
 
 from crud import user_crud
@@ -11,6 +10,8 @@ from models.user_models import User, UserCreate, UserRead, UserUpdate
 router = APIRouter(prefix="/users", tags=["users"])
 
 DbSession = Annotated[Session, Depends(get_db)]
+
+
 
 
 @router.get("/me", response_model=UserRead)
