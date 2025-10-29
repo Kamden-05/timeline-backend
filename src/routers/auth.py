@@ -35,7 +35,7 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: DbSess
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
+        data={"sub": str(user.id)}, expires_delta=access_token_expires
     )
 
     return Token(access_token=access_token, token_type="bearer")
@@ -60,7 +60,7 @@ def register(user_create: UserCreate, db: DbSession):
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": new_user.id}, expires_delta=access_token_expires
+        data={"sub": str(new_user.id)}, expires_delta=access_token_expires
     )
 
     return Token(access_token=access_token, token_type="bearer")

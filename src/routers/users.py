@@ -6,22 +6,13 @@ from sqlmodel import Session
 from crud import user_crud
 from db import get_db
 from models.user_models import User, UserCreate, UserRead, UserUpdate
+from routers.dependencies import get_current_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 DbSession = Annotated[Session, Depends(get_db)]
-
-
-
+current_user_dep = Annotated[User, Depends(get_current_user)]
 
 @router.get("/me", response_model=UserRead)
-def get_current_user(user_id: int, db: DbSession):
-    user = user_crud.get_user(db, user_id)
-
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with id {user_id} not found",
-        )
-
-    return user
+def get_users_me(current_user: current_user_dep):
+    return current_user
