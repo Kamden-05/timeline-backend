@@ -45,7 +45,6 @@ class UserUpdate(SQLModel):
     email: Optional[str] = None
     password: Optional[str] = None
 
-
 class UserRead(UserBase):
     id: int
     created_at: datetime
