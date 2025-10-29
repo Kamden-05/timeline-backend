@@ -1,5 +1,3 @@
-import os
-
 from src.models import User, Timeline, Note
 
 from sqlmodel import SQLModel, create_engine, Session
