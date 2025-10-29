@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
-from src.models.timeline_models import Timeline, TimelineCreate, TimelineUpdate
-from src.crud.helpers import save
+from models.timeline_models import Timeline, TimelineCreate, TimelineUpdate
+from crud.helpers import save
 from typing import Optional
 
 

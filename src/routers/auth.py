@@ -29,7 +29,7 @@ class TokenData(BaseModel):
 
 
 @router.post("/login", response_model=Token)
-def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session):
+def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: DbSession):
     user = user_crud.authenticate_user(
         db, email=form_data.username, password=form_data.password
     )

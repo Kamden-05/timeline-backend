@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
-from src.models.note_models import Note, NoteCreate, NoteUpdate
-from src.crud.helpers import save
+from models.note_models import Note, NoteCreate, NoteUpdate
+from crud.helpers import save
 from typing import Optional
 
 

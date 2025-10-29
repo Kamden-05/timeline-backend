@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
-from src.models.user_models import User, UserCreate, UserUpdate
-from src.crud.helpers import save
+from models.user_models import User, UserCreate, UserUpdate
+from crud.helpers import save
 from typing import Optional
 from security import verify_password
 

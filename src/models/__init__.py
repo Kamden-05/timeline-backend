@@ -1,3 +1,3 @@
-from src.models.user_models import User
-from src.models.timeline_models import Timeline
-from src.models.note_models import Note
+from models.user_models import User
+from models.timeline_models import Timeline
+from models.note_models import Note

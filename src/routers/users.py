@@ -10,9 +10,6 @@ from models.user_models import User, UserCreate, UserRead, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
-
-oauth2 = Annotated[str, oauth2_scheme]
 DbSession = Annotated[Session, Depends(get_db)]
 
 
