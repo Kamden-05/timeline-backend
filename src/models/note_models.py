@@ -30,7 +30,7 @@ class Note(SQLModel, table=True):
 class NoteBase(SQLModel):
     title: str
     note_date: date
-    body: Optional[str]
+    body: Optional[str] = None
 
 class NoteCreate(NoteBase):
     pass
