@@ -13,20 +13,12 @@ from security import create_access_token, get_password_hash
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-
-oauth2 = Annotated[str, oauth2_scheme]
 DbSession = Annotated[Session, Depends(get_db)]
 
 
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
-
 
 @router.post("/login", response_model=Token)
 def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: DbSession):
@@ -43,7 +35,7 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: DbSess
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.id}, expires_delta=access_token_expires
+        data={"sub": user.email}, expires_delta=access_token_expires
     )
 
     return Token(access_token=access_token, token_type="bearer")
