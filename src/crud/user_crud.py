@@ -1,5 +1,5 @@
 from sqlmodel import Session, select
-from models.user_models import User, UserCreate, UserUpdate
+from models.user_models import User, UserDbCreate, UserDbUpdate
 from crud.helpers import save
 from typing import Optional
 from security import verify_password
@@ -13,14 +13,14 @@ def get_user_by_email(db: Session, email: str) -> Optional[User]:
     return db.exec(statement).first()
 
 
-def create_user(db: Session, user_create: UserCreate) -> Optional[User]:
+def create_user(db: Session, user_create: UserDbCreate) -> Optional[User]:
     data = user_create.model_dump(exclude_unset=True)
     user = User(**data)
 
     return save(db, user)
 
 
-def update_user(db: Session, user_update: UserUpdate, user_id: int) -> Optional[User]:
+def update_user(db: Session, user_update: UserDbUpdate, user_id: int) -> Optional[User]:
     user = db.get(User, user_id)
     if not user:
         return None

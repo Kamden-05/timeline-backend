@@ -5,17 +5,36 @@ from sqlmodel import Session
 
 from crud import user_crud
 from db import get_db
-from models.user_models import User, UserCreate, UserRead, UserUpdate
+from models.user_models import User, UserRead, UserUpdate, UserDbUpdate
 from routers.dependencies import get_current_user
+from security import get_password_hash
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 DbSession = Annotated[Session, Depends(get_db)]
 CurrentUser = Annotated[User, Depends(get_current_user)]
 
+
 @router.get("/me", response_model=UserRead)
 def get_current_user(current_user: CurrentUser):
     return current_user
+
+
+@router.patch("/me", response_model=UserRead)
+def update_current_user(
+    user_update: UserUpdate,
+    current_user: CurrentUser,
+    db: DbSession,
+):
+    
+    db_update = UserDbUpdate(**user_update.model_dump(exclude_unset=True))
+
+
+    if hasattr(user_update, "password") and user_update.password:
+        db_update.password_hash = get_password_hash(user_update.password)
+    
+    updated_user = user_crud.update_user(db, db_update, current_user.id)
+    return updated_user
 
 
 @router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
