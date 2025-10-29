@@ -7,14 +7,14 @@ if TYPE_CHECKING:
     from src.models.timeline_models import Timeline
 
 
-class Note(SQLModel, table=True):
+class Event(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
-    note_date: date = Field(index=True)
+    event_date: date = Field(index=True)
     body: Optional[str] = Field(default=None)
 
     timeline_id: Optional[int] = Field(default=None, foreign_key="timeline.id")
-    timeline: Optional["Timeline"] = Relationship(back_populates="notes")
+    timeline: Optional["Timeline"] = Relationship(back_populates="events")
 
     created_at: datetime = Field(
         sa_column_kwargs={"server_default": func.now()}, nullable=False
@@ -27,20 +27,24 @@ class Note(SQLModel, table=True):
         nullable=False,
     )
 
-class NoteBase(SQLModel):
+
+class EventBase(SQLModel):
     title: str
-    note_date: date
+    event_date: date
     body: Optional[str] = None
 
-class NoteCreate(NoteBase):
+
+class EventCreate(EventBase):
     pass
 
-class NoteUpdate(SQLModel):
+
+class EventUpdate(SQLModel):
     title: Optional[str] = None
-    note_date: Optional[date] = None
+    event_date: Optional[date] = None
     body: Optional[str] = None
 
-class NoteRead(NoteBase):
+
+class EventRead(EventBase):
     id: int
     created_at: datetime
     updated_at: datetime

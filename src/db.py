@@ -1,4 +1,4 @@
-from models import User, Timeline, Note
+from models import User, Timeline, Event
 
 from sqlmodel import SQLModel, create_engine, Session
 from config import settings

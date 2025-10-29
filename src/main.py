@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import auth, notes, timelines, users
+from routers import auth, events, timelines, users
 
 app = FastAPI()
 
@@ -20,7 +20,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(timelines.router)
-app.include_router(notes.router)
+app.include_router(events.router)
 
 
 @app.get("/")
