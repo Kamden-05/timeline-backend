@@ -44,8 +44,8 @@ class TimelineCreate(TimelineBase):
 
 class TimelineUpdate(SQLModel):
     title: Optional[str] = None
-    start_date = Optional[str] = None
-    end_date = Optional[str] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
 
 class TimelineRead(TimelineBase):
     id: int
