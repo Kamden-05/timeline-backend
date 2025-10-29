@@ -2,11 +2,10 @@ import os
 
 from src.models import User, Timeline, Note
 
-from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine, Session
+from src.config import settings
 
-load_dotenv()
-url = os.getenv("DB_URL")
+url = settings.POSTGRES_URL
 
 engine = create_engine(url, echo=True) # type: ignore
 
