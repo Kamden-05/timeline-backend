@@ -2,6 +2,7 @@ from sqlmodel import Field, SQLModel, Relationship
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 from sqlalchemy import func
+from pydantic import field_validator
 
 if TYPE_CHECKING:
     from src.models.timeline_models import Timeline
@@ -32,6 +33,10 @@ class User(SQLModel, table=True):
 class UserBase(SQLModel):
     name: str
     email: str
+
+    @field_validator('email')
+    def validate_email(cls, v: str) -> str:
+        return v.strip().lower()
 
 
 class UserCreate(UserBase):

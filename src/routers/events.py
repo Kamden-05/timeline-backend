@@ -68,7 +68,7 @@ def create_note(
 
 
 @router.patch("/{event_id}", response_model=EventRead)
-def update_note(
+def update_event(
     timeline_id: int,
     event_id: int,
     event_update: EventUpdate,
@@ -93,7 +93,7 @@ def update_note(
 
 
 @router.delete("/{event_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_note(
+def delete_event(
     timeline_id: int,
     event_id: int,
     current_user: CurrentUser,
