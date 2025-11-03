@@ -10,6 +10,7 @@ from models.timeline_models import (
 from models.user_models import User
 from dependencies import get_current_user
 from sqlmodel import Session
+from sqlalchemy.exc import IntegrityError
 
 router = APIRouter(prefix="/timelines", tags=["timelines"])
 
@@ -51,21 +52,27 @@ def get_timeline_by_id(timeline_id: int, current_user: current_user_dep, db: DbS
 @router.post("", response_model=TimelineRead)
 def create_timeline(
     tl_create: TimelineCreate, current_user: current_user_dep, db: DbSession
-):  
-    timeline = timeline_crud.create_timeline(db, tl_create, current_user.id)
-
-    if timeline is None:
+):
+    
+    try:
+        timeline = timeline_crud.create_timeline(db, tl_create, current_user.id)
+    except IntegrityError:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Timeline with title {tl_create.title} already exists"
+            detail=f"Timeline with title {tl_create.title} already exists",
         )
 
     return timeline
 
+
 @router.patch("/{timeline_id}", response_model=TimelineRead)
 def update_timeline(
-    timeline_id: int, tl_update: TimelineUpdate, current_user: current_user_dep, db: DbSession
+    timeline_id: int,
+    tl_update: TimelineUpdate,
+    current_user: current_user_dep,
+    db: DbSession,
 ):
+
     timeline = timeline_crud.get_timeline(db, timeline_id)
 
     if timeline.user_id != current_user.id:
@@ -74,7 +81,14 @@ def update_timeline(
             detail="Not authorized to access this timeline",
         )
 
-    updated_timeline = timeline_crud.update_timeline(db, timeline_id=timeline_id, tl_update=tl_update)
+    try:
+        updated_timeline = timeline_crud.update_timeline(
+            db, timeline_id=timeline_id, tl_update=tl_update
+        )
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Timeline title already exists"
+        )
 
     return updated_timeline
 

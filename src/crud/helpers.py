@@ -1,4 +1,5 @@
 from sqlmodel import Session, SQLModel
+from sqlalchemy.exc import IntegrityError
 
 
 def save(db: Session, obj: SQLModel) -> SQLModel:
