@@ -15,7 +15,8 @@ The **Timeline Backend** serves as the backend for a timeline-based note-taking 
 - Create, read, update, and delete **timeline events**.
 - Ensures that users can only access or modify their own timelines.
 - Built to be consumed by the **Timeline Frontend Web App**.
-- Future plans include:
+
+**Future plans:**
   - Deployment to AWS Lambda + API Gateway
   - Public or private visibility settings for timelines.
   - Timeline sharing between users.
