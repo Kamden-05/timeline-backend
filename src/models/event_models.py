@@ -1,7 +1,8 @@
-from sqlmodel import Field, SQLModel, Relationship
-from datetime import datetime, date
-from typing import Optional, TYPE_CHECKING
+from datetime import date, datetime
+from typing import TYPE_CHECKING, Optional
+
 from sqlalchemy import func
+from sqlmodel import Field, Relationship, SQLModel, CheckConstraint
 
 if TYPE_CHECKING:
     from src.models.timeline_models import Timeline
@@ -16,6 +17,9 @@ class Event(SQLModel, table=True):
     timeline_id: Optional[int] = Field(default=None, foreign_key="timeline.id")
     timeline: Optional["Timeline"] = Relationship(back_populates="events")
 
+    hex_color: str = Field(default="#0000FF", min_length=7, max_length=7)
+
+    # pylint: disable=not-callable
     created_at: datetime = Field(
         sa_column_kwargs={"server_default": func.now()}, nullable=False
     )
@@ -27,11 +31,16 @@ class Event(SQLModel, table=True):
         nullable=False,
     )
 
+    __table_args__ = (
+        CheckConstraint("hex_color ~ '^#[0-9A-Fa-f]{6}$'", name="valid_hex_color"),
+    )
+
 
 class EventBase(SQLModel):
     title: str
     event_date: date
     body: Optional[str] = None
+    hex_color: str
 
 
 class EventCreate(EventBase):
@@ -42,6 +51,7 @@ class EventUpdate(SQLModel):
     title: Optional[str] = None
     event_date: Optional[date] = None
     body: Optional[str] = None
+    hex_color: Optional[str] = None
 
 
 class EventRead(EventBase):

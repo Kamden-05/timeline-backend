@@ -1,8 +1,9 @@
-from sqlmodel import Field, SQLModel, Relationship
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
-from sqlalchemy import func
+from typing import TYPE_CHECKING, Optional
+
 from pydantic import field_validator
+from sqlalchemy import func
+from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from src.models.timeline_models import Timeline
@@ -18,6 +19,7 @@ class User(SQLModel, table=True):
         back_populates="user", sa_relationship_kwargs={"cascade": "all, delete"}
     )
 
+    # pylint: disable=not-callable
     created_at: datetime = Field(
         sa_column_kwargs={"server_default": func.now()}, nullable=False
     )
@@ -34,7 +36,8 @@ class UserBase(SQLModel):
     name: str
     email: str
 
-    @field_validator('email')
+    @field_validator("email")
+    @classmethod
     def validate_email(cls, v: str) -> str:
         return v.strip().lower()
 
@@ -52,10 +55,12 @@ class UserUpdate(SQLModel):
     email: Optional[str] = None
     password: Optional[str] = None
 
+
 class UserDbUpdate(SQLModel):
     name: Optional[str] = None
     email: Optional[str] = None
     password_hash: Optional[str] = None
+
 
 class UserRead(UserBase):
     id: int

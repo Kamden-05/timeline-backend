@@ -1,11 +1,12 @@
-from sqlmodel import Field, SQLModel, Relationship, UniqueConstraint
-from datetime import datetime, date
-from typing import Optional, TYPE_CHECKING
+from datetime import date, datetime
+from typing import TYPE_CHECKING, Optional
+
 from sqlalchemy import func
+from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
 
 if TYPE_CHECKING:
-    from src.models.user_models import User
     from models.event_models import Event
+    from src.models.user_models import User
 
 
 class Timeline(SQLModel, table=True):
@@ -22,6 +23,7 @@ class Timeline(SQLModel, table=True):
         back_populates="timeline", sa_relationship_kwargs={"cascade": "all, delete"}
     )
 
+    # pylint: disable=not-callable
     created_at: datetime = Field(
         sa_column_kwargs={"server_default": func.now()}, nullable=False
     )
