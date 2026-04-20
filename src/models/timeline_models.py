@@ -23,6 +23,8 @@ class Timeline(SQLModel, table=True):
         back_populates="timeline", sa_relationship_kwargs={"cascade": "all, delete"}
     )
 
+    is_public: bool = Field(default=False)
+
     # pylint: disable=not-callable
     created_at: datetime = Field(
         sa_column_kwargs={"server_default": func.now()}, nullable=False
@@ -44,6 +46,7 @@ class TimelineBase(SQLModel):
     title: str
     start_date: Optional[date] = None
     end_date: Optional[date] = None
+    is_public: bool = False
 
 
 class TimelineCreate(TimelineBase):
@@ -54,6 +57,7 @@ class TimelineUpdate(SQLModel):
     title: Optional[str] = None
     start_date: Optional[str] = None
     end_date: Optional[str] = None
+    is_public: Optional[bool] = None
 
 
 class TimelineRead(TimelineBase):
